@@ -1,0 +1,9 @@
+package com.fancal.covid19.repository;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.fancal.covid19.entity.Province;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ProvinceMaper extends BaseMapper<Province> {
+}
