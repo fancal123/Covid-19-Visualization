@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import './horizontal-layout.css'
 import 'antd/dist/antd.css';
 import { Link, Route, Routes } from 'react-router-dom';
-import { Tag,Space,Layout, Menu, Table, Col, Row, Statistic, Button, Divider, Collapse, List, Drawer } from 'antd';
+import { Popover, Tag, Space, Layout, Menu, Table, Col, Row, Statistic, Button, Divider, Collapse, List, Drawer } from 'antd';
 import * as echarts from 'echarts';
 import axios from "axios";
 import api from '../api/covid19api'
@@ -11,7 +11,7 @@ import ProCard from '@ant-design/pro-card';
 import '@ant-design/pro-card/dist/card.css'
 
 
-
+// import ProTable, { TableDropdown } from '@ant-design/pro-table';
 
 const { Header, Content, Footer } = Layout;
 const { Panel } = Collapse;
@@ -66,78 +66,6 @@ function National(props) {
     // 各省各市数据
     const [provinceData, setprovinceData] = useState([]);
 
-    const columns = [
-        {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-            render: text => <a>{text}</a>,
-        },
-        {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
-        },
-        {
-            title: 'Tags',
-            key: 'tags',
-            dataIndex: 'tags',
-            render: tags => (
-                <>
-                    {tags.map(tag => {
-                        let color = tag.length > 5 ? 'geekblue' : 'green';
-                        if (tag === 'loser') {
-                            color = 'volcano';
-                        }
-                        return (
-                            <Tag color={color} key={tag}>
-                                {tag.toUpperCase()}
-                            </Tag>
-                        );
-                    })}
-                </>
-            ),
-        },
-        {
-            title: 'Action',
-            key: 'action',
-            render: (text, record) => (
-                <Space size="middle">
-                    <a>Invite {record.name}</a>
-                    <a>Delete</a>
-                </Space>
-            ),
-        },
-    ];
-
-    const data = [
-        {
-            key: '1',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-            tags: ['nice', 'developer'],
-        },
-        {
-            key: '2',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-            tags: ['loser'],
-        },
-        {
-            key: '3',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sidney No. 1 Lake Park',
-            tags: ['cool', 'teacher'],
-        },
-    ];
 
 
     useEffect(() => {
@@ -160,17 +88,75 @@ function National(props) {
             console.log("Province数据获取失败");
         });
 
+
     }, []);
     // console.log({ provinceData });
     // 实时新闻表格内容
     const newsList = news.map((news_) =>
         <a href={news_["link"]} style={{ color: '#000000' }}>{news_["pubDateStr"]} {news_["title"]}</a>
-    )
+    );
+    const data = provinceData.map(assemble)
+    // const data = []
+    function assemble(provinceData_) {
+        return ({
+
+            key: provinceData_['locationId'],
+            provinceName: provinceData_['provinceName'],
+            currentConfirmedCount: provinceData_['currentConfirmedCount'],
+            confirmedCount: provinceData_['confirmedCount'],
+            curedCount: provinceData_['curedCount'],
+            deadCount: provinceData_['deadCount'],
+            description: provinceData_['cities'].length > 0 ? provinceData_['cities'].map(cities_paser) : 'NoCity'
+        });
+    }
+    function cities_paser(cityData) {
+        
+        if (cityData.lengh == 0) {
+            return ('Not Expandable');
+        }
+        return ({
+            key: cityData['locationId'],
+            provinceName: cityData['cityName'],
+            currentConfirmedCount: cityData['currentConfirmedCount'],
+            confirmedCount: cityData['confirmedCount'],
+            curedCount: cityData['curedCount'],
+            deadCount: cityData['deadCount'],
+        });
+    }
+    console.log(data);
+    // "国内页面"表格表头
+    const columns = [
+        {
+            title: '地区',
+            dataIndex: 'provinceName',
+            key: 'provinceName',
+        },
+        {
+            title: '现存确诊',
+            dataIndex: 'currentConfirmedCount',
+            key: 'currentConfirmedCount',
+        },
+        {
+            title: '累积确诊',
+            dataIndex: 'confirmedCount',
+            key: 'confirmedCount',
+        },
+        {
+            title: '治愈',
+            dataIndex: 'curedCount',
+            key: 'curedCount',
+        },
+        {
+            title: '死亡',
+            dataIndex: 'deadCount',
+            key: 'deadCount',
+        },
+    ];
 
     return (
         <Content style={{ padding: '30px 30px' }}>
 
-            <Divider orientation="left"></Divider>
+            <Divider orientation="left">全国概览</Divider>
 
             <ProCard split="vertical">
                 <ProCard colSpan="65%">
@@ -210,10 +196,27 @@ function National(props) {
 
                 </ProCard>
             </ProCard>
-            <Divider orientation="left">各省各市111</Divider>
+            <Divider orientation="left">各省各市</Divider>
 
-            <Table columns={columns} dataSource={data} bo/>
+            {/* <Table columns={columns} dataSource={data} /> */}
 
+            <ProCard split="vertical">
+                <ProCard colSpan="50%">
+                    <Table
+                        dataSource={data}
+                        columns={columns}
+                        expandable={{
+                            expandedRowRender: record => <Table columns={columns} dataSource={record.description} />,
+                            rowExpandable: record => record.description !== 'NoCity',
+                        }}
+                    />
+                </ProCard>
+                <ProCard title="左右分栏子卡片带标题" headerBordered>
+                    <div style={{ height: 360 }} id="map">
+
+                    </div>
+                </ProCard>
+            </ProCard>
         </Content>
     );
 }

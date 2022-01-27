@@ -52,9 +52,10 @@ def getData(url):
     national_paser(areaStat)
     # 全国新闻
     news = re.search(
-        r"\[(.*?)\]", str(bs.find("script", attrs={"id": "getTimelineService1"}))
+        r'\[(.*)\}\]', str(bs.find("script", attrs={"id": "getTimelineService1"}))
     )
     news_paser(news)
+   
 
     # 全球数据
     abroad_info = re.search(
@@ -168,11 +169,11 @@ def news_paser(news):
     news = json.loads(news.group(0))
     cursor.execute("truncate table news")
     for info in news:
-        print(str(info["pubDate"]))
-        print(str(info["pubDateStr"]))
-        print(str(info["title"])) 
-        print(str(info["summary"]))
-        print(str(info["sourceUrl"]))
+        # print(str(info["pubDate"]))
+        # print(str(info["pubDateStr"]))
+        # print(str(info["title"])) 
+        # print(str(info["summary"]))
+        # print(str(info["sourceUrl"]))
         cursor.execute(
             "insert into news values(%s,%s,%s,%s,%s)",
             [
