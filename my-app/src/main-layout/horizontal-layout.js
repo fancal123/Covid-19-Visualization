@@ -6,7 +6,7 @@ import { Popover, Tag, Space, Layout, Menu, Table, Col, Row, Statistic, Button, 
 import * as echarts from 'echarts';
 import axios from "axios";
 import api from '../api/covid19api'
-
+import DataMap from '../module/testMap'
 import ProCard from '@ant-design/pro-card';
 import '@ant-design/pro-card/dist/card.css'
 
@@ -16,34 +16,33 @@ import '@ant-design/pro-card/dist/card.css'
 const { Header, Content, Footer } = Layout;
 const { Panel } = Collapse;
 
-class MainLayout extends React.Component {
-    render() {
-        return (
-            <Layout className="layout">
-                <Header>
-                    <div className="logo" />
-                    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
-                        <Menu.Item key="1">
-                            <Link to="/">国内</Link>
-                        </Menu.Item>
-                        <Menu.Item key="2">
-                            <Link to="/globle">全球</Link>
-                        </Menu.Item>
+function MainLayout() {
+    return (
+        <Layout className="layout">
+            <Header>
+                <div className="logo" />
+                <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
+                    <Menu.Item key="1">
+                        <Link to="/">国内</Link>
+                    </Menu.Item>
+                    <Menu.Item key="2">
+                        <Link to="/globle">全球</Link>
+                    </Menu.Item>
 
-                        <Menu.Item key="3">
-                            <Link to="/info">关于</Link>
-                        </Menu.Item>
-                    </Menu>
-                </Header>
-                <Routes>
-                    <Route path='/' element={<National />} />
-                    <Route path='/globel' element={<Globel />} />
-                    <Route path='/info' element={<Info />} />
-                </Routes>
-                <Footer style={{ textAlign: 'center' }}>Data Visualization and Analyzation Platform of COVID-19 Created by FANCAL</Footer>
-            </Layout>
-        );
-    }
+                    <Menu.Item key="3">
+                        <Link to="/info">关于</Link>
+                    </Menu.Item>
+                </Menu>
+            </Header>
+            <Routes>
+                <Route path='/' element={<National />} />
+                <Route path='/globel' element={<Globel />} />
+                <Route path='/info' element={<Info />} />
+            </Routes>
+            <Footer style={{ textAlign: 'center' }}>Data Visualization and Analyzation Platform of COVID-19 Created by FANCAL</Footer>
+        </Layout>
+    );
+
 }
 //“较昨日增加”元素正负判断
 function showIncr(Incr) {
@@ -59,6 +58,7 @@ function showIncr(Incr) {
 
 // 图表页面
 function National(props) {
+
     // 总结数据
     const [overAllData, setoverAllData] = useState([]);
     // 实时新闻
@@ -88,9 +88,9 @@ function National(props) {
             console.log("Province数据获取失败");
         });
 
-
     }, []);
-    // console.log({ provinceData });
+    
+
     // 实时新闻表格内容
     const newsList = news.map((news_) =>
         <a href={news_["link"]} style={{ color: '#000000' }}>{news_["pubDateStr"]} {news_["title"]}</a>
@@ -110,7 +110,7 @@ function National(props) {
         });
     }
     function cities_paser(cityData) {
-        
+
         if (cityData.lengh == 0) {
             return ('Not Expandable');
         }
@@ -123,7 +123,13 @@ function National(props) {
             deadCount: cityData['deadCount'],
         });
     }
-    console.log(data);
+    const mapdata = provinceData.map(assembleMapData);
+    function assembleMapData(provinceData_) {
+        return ({
+            name: provinceData_['provinceName'],
+            value: provinceData_['currentConfirmedCount'],
+        });
+    }
     // "国内页面"表格表头
     const columns = [
         {
@@ -153,8 +159,9 @@ function National(props) {
         },
     ];
 
+
     return (
-        <Content style={{ padding: '30px 30px' }}>
+        <Content style={{ padding: '30px 150px' }}>
 
             <Divider orientation="left">全国概览</Divider>
 
@@ -211,9 +218,9 @@ function National(props) {
                         }}
                     />
                 </ProCard>
-                <ProCard title="左右分栏子卡片带标题" headerBordered>
-                    <div style={{ height: 360 }} id="map">
-
+                <ProCard title="现存确诊地图" headerBordered>
+                    <div style={{ height: 500 }} id="map">
+                        <DataMap mapdata={mapdata}/>
                     </div>
                 </ProCard>
             </ProCard>
