@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 
-export default function UserLocationData(){
+export default function LocalData(){
 
     return(
         <div>
