@@ -81,43 +81,43 @@ def overall_paser(overall_information):
         .replace(" ", "")
     )
 
-    # print(
-    #     "现存确诊"
-    #     + str(overall_information["currentConfirmedCount"])
-    #     + "，较昨日+"
-    #     + str(overall_information["currentConfirmedIncr"])
-    # )
-    # print(
-    #     "境外输入"
-    #     + str(overall_information["suspectedCount"])
-    #     + "，较昨日+"
-    #     + str(overall_information["suspectedIncr"])
-    # )
-    # print(
-    #     "现存无症状"
-    #     + str(overall_information["seriousCount"])
-    #     + "，较昨日+"
-    #     + str(overall_information["seriousIncr"])
-    # )
+    print(
+        "现存确诊"
+        + str(overall_information["currentConfirmedCount"])
+        + "，较昨日+"
+        + str(overall_information["currentConfirmedIncr"])
+    )
+    print(
+        "境外输入"
+        + str(overall_information["suspectedCount"])
+        + "，较昨日+"
+        + str(overall_information["suspectedIncr"])
+    )
+    print(
+        "现存无症状"
+        + str(overall_information["seriousCount"])
+        + "，较昨日+"
+        + str(overall_information["seriousIncr"])
+    )
 
-    # print(
-    #     "累计确诊"
-    #     + str(overall_information["confirmedCount"])
-    #     + "，较昨日+"
-    #     + str(overall_information["confirmedIncr"])
-    # )
-    # print(
-    #     "累计死亡"
-    #     + str(overall_information["deadCount"])
-    #     + "，较昨日+"
-    #     + str(overall_information["deadIncr"])
-    # )
-    # print(
-    #     "累计治愈"
-    #     + str(overall_information["curedCount"])
-    #     + "，较昨日+"
-    #     + str(overall_information["curedIncr"])
-    # )
+    print(
+        "累计确诊"
+        + str(overall_information["confirmedCount"])
+        + "，较昨日+"
+        + str(overall_information["confirmedIncr"])
+    )
+    print(
+        "累计死亡"
+        + str(overall_information["deadCount"])
+        + "，较昨日+"
+        + str(overall_information["deadIncr"])
+    )
+    print(
+        "累计治愈"
+        + str(overall_information["curedCount"])
+        + "，较昨日+"
+        + str(overall_information["curedIncr"])
+    )
     cursor.execute("truncate table overalldata")
 
     cursor.execute(
@@ -189,6 +189,7 @@ def news_paser(news):
 
 def abroad_paser(abroad_info):
     countries = json.loads(abroad_info.group(0))
+    # print(countries)
     for country in countries:
         try:
             country.pop("id")

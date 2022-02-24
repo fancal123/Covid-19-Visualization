@@ -82,15 +82,23 @@ export default function ProvinceDataWithMap() {
             deadCount: cityData['deadCount'],
         });
     }
-
+    // 组装地图数据
     const mapdata = provinceData.map(assembleMapData);
     function assembleMapData(provinceData_) {
-        return ({
-            name: provinceData_['provinceName'],
-            value: provinceData_['currentConfirmedCount'],
-        });
-    }
+        if(provinceData_['provinceName']=="台湾"){
+            return({
+                name:'台湾省',
+                value: provinceData_['currentConfirmedCount'],
+            });
+        }else{
+            return({
+                name: provinceData_['provinceName'],
+                value: provinceData_['currentConfirmedCount'],
+            });
+        }
 
+    }
+    console.log(mapdata);
     useEffect(() => {
         let myChart = echarts.init(document.getElementById('map'))
         let name = 'china' //地图名
@@ -110,7 +118,7 @@ export default function ProvinceDataWithMap() {
                 zoom: 1.6,  //地图的比例
                 scaleLimit: {//缩放控制，设置为同一数字，禁止缩放
                     min: 1.6,
-                    max: 3
+                    max: 8
                 },
 
                 label: {
@@ -138,13 +146,13 @@ export default function ProvinceDataWithMap() {
                     },
                 },
                 nameMap: {
-                    '澳门特别行政区': '',
-                    '香港特别行政区': ''
+                    '澳门特别行政区': '澳门',
+                    '香港特别行政区': '香港'
                 },
 
             },
             visualMap: {
-                left: 'right',
+                left: 'left',
                 min: 0,
                 max: 500,
                 inRange: {
