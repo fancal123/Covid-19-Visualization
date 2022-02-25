@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.List;
 
 @SpringBootTest
@@ -21,14 +23,15 @@ class MainApplicationTests {
     private ProvinceMaper provinceMaper;
     @Test
     public void test(){
-        List<Province> provinceList = provinceMaper.selectList(null);
-        // for(Province p:provinceList){
-        //     System.out.println(p.getProvinceName());
-        //     System.out.println(p.getContent());
-        // }
-        Province province=provinceList.get(1);
-        JSONArray jsonArray = (JSONArray) JSONArray.toJSON(provinceList);
-
+        try {
+            Process pro = Runtime.getRuntime().exec("C:/Users/糙米小面包/AppData/Local/Programs/Python/Python39/python.exe d:/项目/Covid-19-Visualization/丁香园疫情数据.py");
+            String line;
+            BufferedReader buf = new BufferedReader(new InputStreamReader(pro.getInputStream()));
+            while ((line = buf.readLine()) != null)
+                System.out.println(line);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 }

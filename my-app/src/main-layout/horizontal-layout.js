@@ -14,8 +14,12 @@ import OverAllData from "../module/overAllData";
 import ProvinceDataWithMap from "../module/provinceDataWithMap";
 import LocalData from "../module/localData";
 import PolicyCheck from "../module/policyCheck";
+import InfoPenel from "../module/info";
+
+
 const { Header, Content, Footer } = Layout;
 const { Panel } = Collapse;
+
 
 function MainLayout() {
     return (
@@ -92,9 +96,7 @@ function Policy(props) {
     // }
     // console.log(genData);
    
-    function onChange(value) {
-        console.log(value);
-    }
+
     return (
         <Content  style={{ padding: '30px 30px',width: '700px',textAlign:'center',alignSelf:'center' }}>
             <PolicyCheck />
@@ -105,8 +107,8 @@ function Policy(props) {
 // 关于页面
 function Info(props) {
     return (
-        <Content style={{ padding: '30px 30px' }}>
-            
+        <Content style={{ padding: '30px 30px',width: '700px',alignSelf:'center' }}>
+            <InfoPenel/>
         </Content>
     );
 }

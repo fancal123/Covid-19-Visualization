@@ -8,7 +8,7 @@ import random
 import re
 import json
 import mysql.connector as mc
-
+import time
 # from service.nameMap import country_type_map, city_name_map, country_name_map,
 # 爬取网页
 def getData(url):
@@ -224,6 +224,13 @@ if __name__ == "__main__":  # 流程控制
     # 数据来源丁香园
     url = "https://ncov.dxy.cn/ncovh5/view/pneumonia"
     getData(url)
-
+    # 记录更新时间
+    cursor.execute("truncate table updatetime")
+    cursor.execute(
+            "insert into updatetime values(%s)",
+            [time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())],
+        )
+    conn.commit()
+    print()
     # 关闭数据库连接
     cursor.close()
