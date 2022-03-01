@@ -16,7 +16,13 @@ export default function InfoPanel() {
         })
     }, []);
     function update() {
-        console.log("更新");
+        axios.post(api.ip+"/activateCrawler").then(res=>{
+            axios.get(api.ip + "/getUpdateTime").then(res => {
+                setUpdateTime(res.data)
+                console.log(res.data);
+            })
+        });
+        console.log("数据爬取中");
     }
 
     return (

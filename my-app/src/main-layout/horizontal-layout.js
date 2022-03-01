@@ -22,6 +22,11 @@ const { Panel } = Collapse;
 
 
 function MainLayout() {
+    // 定时更新一个state，从而达到定时更新页面的效果，每小时更新
+    const [Fresh, setFresh] = useState(0);
+    setInterval(function(){
+        setFresh(Fresh+1)
+    },3600000)
     return (
         <Layout className="layout">
             <Header>
