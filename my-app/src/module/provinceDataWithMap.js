@@ -58,7 +58,6 @@ export default function ProvinceDataWithMap() {
     // const data = []
     function assemble(provinceData_) {
         return ({
-
             key: provinceData_['locationId'],
             provinceName: provinceData_['provinceName'],
             currentConfirmedCount: provinceData_['currentConfirmedCount'],
@@ -69,7 +68,6 @@ export default function ProvinceDataWithMap() {
         });
     }
     function cities_paser(cityData) {
-
         if (cityData.lengh == 0) {
             return ('Not Expandable');
         }
