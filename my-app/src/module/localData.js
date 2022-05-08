@@ -10,7 +10,8 @@ export default function LocalData() {
     const [cityName, setcityName] = useState('定位失败');
     const [currentLocationData, setcurrentLocationData] = useState([]);
     const [cityData, setcityData] = useState({});
-    const [importedCount, setimportedCount] = useState(0);
+    // 境外输入、待明确区域的人数（各地描述稍微有些出入）所以改为保存json对象
+    const [importedCount, setimportedCount] = useState({});
     const [dangerAreas, setdangerAreas] = useState([]);
     useEffect(() => {
         // 获取用户坐标
@@ -73,36 +74,62 @@ export default function LocalData() {
     function findCityData(currentLocationData_, nameFromGPS) {
         for (let i = 0; i < currentLocationData_.length; i++) {
             let nameFromData = (currentLocationData_[i]["cityName"])
-            // console.log("定位地点："+nameFromGPS+" 对比项："+nameFromData+" 结果："+nameFromGPS.search(nameFromData))
+            console.log("定位地点："+nameFromGPS+" 对比项："+nameFromData+" 结果："+nameFromGPS.search(nameFromData))
             if (nameFromGPS.search(nameFromData) > -1) {
+                console.log(currentLocationData_[i]);
                 return currentLocationData_[i]
             }
         }
     }
     //查找对应城市的境外输入人数
     function findImportedCount(currentLocationData_) {
-        for (let i = 0; i < currentLocationData_.length; i++) {
-            let nameFromData = (currentLocationData_[i]["cityName"])
-            let str = "境外输入"
-            if (str.search(nameFromData) > -1) {
-                return currentLocationData_[i]["currentConfirmedCount"]
+        if(currentLocationData_.length>0){
+            for (let i = 0; i < currentLocationData_.length; i++) {
+                let nameFromData = (currentLocationData_[i]["cityName"])
+                let str = "境外输入"
+                let str2="待明确地区"
+                if (str.search(nameFromData) > -1) {
+                    console.log("查找到的数据"+currentLocationData_[i]["currentConfirmedCount"]+"所有数据"+currentLocationData_[i]);
+                    console.log(currentLocationData_[i]);
+                    return currentLocationData_[i]
+                }
+                if (str2.search(nameFromData) > -1) {
+                    console.log("查找到的数据"+currentLocationData_[i]["currentConfirmedCount"]+"所有数据"+currentLocationData_[i]);
+                    console.log(currentLocationData_[i]);
+                    return currentLocationData_[i]
+                }
             }
+        }else{
+            return {cityName:"当前城市无此数据"}
         }
+        
     }
+    // 查找对应城市的高危地区
+    // function findHighDangerArea(dangerAreas){
+    //     for(let i = 0 ;i <dangerAreas.length;i++){
+    //         let cityNameFromData = (dangerAreas[i]["cityName"])
+            
+    //         if(cityName.search(cityNameFromData)>-1){
+    //             return 
+    //         }
+    //     };
+    // }
     //页面元素转换 
     function convert(data) {
         var number = parseInt(data)
-        if (number == 0) {
+        // console.log(data);
+        //部分省市出现了负数的现存确诊人数，所以小于0时直接显示暂无
+        if (number == 0 || number<0) {
             return (
                 <a style={{ color: '#52c41a' }}>暂无确诊</a>
             );
 
         } else if (number > 0) {
             return (
-                <a style={{ color: '#DC143C' }}>累积确诊 {number} 人</a>
+                <a style={{ color: '#DC143C' }}>存现确诊 {number} 人</a>
 
             );
-        } else if (number == -1) {
+        }else if (number == -1) {
             return (
                 <a style={{ color: '#000000' }}>无法确定您的所在地</a>
             );
@@ -112,7 +139,7 @@ export default function LocalData() {
 
     //风险区域气泡内容
     const contentItem = dangerAreas.map((item) =>
-        <p key={item.areaName}>{item.areaName}</p>
+        <p key={item.areaName}>{item.cityName}---{item.areaName}</p>
     );
     //风险区域气泡
     const content = (
@@ -120,9 +147,17 @@ export default function LocalData() {
             {contentItem}
         </div>
     );
-    
     //风险区域展开按钮
     const title = (
+        <div>
+            {currentLocationData['provinceName']}
+            <Popover content={content} title="高危地区" >
+                <Button danger style={{ margin: '0px 30px ', border: '0px' }} type="primary" shape="circle" size="small">?</Button>
+            </Popover>
+
+        </div>
+    );
+    const title_bak = (
         <div>
             {cityName}
             <Popover content={content} title="高危地区" >
@@ -131,24 +166,26 @@ export default function LocalData() {
 
         </div>
     );
+    
+
     return (
         <div className="site-card-wrapper">
             <Row gutter={16}>
                 <Col span={8}>
-                    <Card title={currentLocationData['provinceName']} bordered={false}>
+                    <Card title={title} bordered={false}>
                         {convert(currentLocationData['currentConfirmedCount'])}
                     </Card>
                 </Col>
                 <Col span={8}>
 
-                    <Card title={title} bordered={false}>
-                        {convert(cityData["currentConfirmedCountStr"])}
+                    <Card title={cityName} bordered={false}>
+                        {convert(cityData["currentConfirmedCount"])}
                     </Card>
 
                 </Col>
                 <Col span={8}>
-                    <Card title="境外输入" bordered={false}>
-                        {convert(importedCount)}
+                    <Card title={importedCount['cityName']} bordered={false}>
+                        {convert(importedCount['currentConfirmedCount'])}
                     </Card>
                 </Col>
             </Row>
