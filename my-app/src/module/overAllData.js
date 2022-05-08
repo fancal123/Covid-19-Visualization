@@ -67,7 +67,7 @@ export default function OverAllData(){
                         <Statistic title="累积治愈" value={overAllData['curedCount']} suffix={<label style={overAllData['curedIncr'] < 0 ? { color: '#DC143C', fontSize: 5 } : { color: '#52c41a', fontSize: 5 }} >{showIncr(overAllData['curedIncr'])}</label>} />
                     </Col>
                     <Col span={8}>
-                        <Statistic title="累积死亡" value={overAllData['deadCount']} suffix={<label style={overAllData['deadIncr'] < 0 ? { color: '#DC143C', fontSize: 5 } : { color: '#52c41a', fontSize: 5 }} >{showIncr(overAllData['deadIncr'])}</label>} />
+                        <Statistic title="累积死亡" value={overAllData['deadCount']} suffix={<label style={overAllData['deadIncr'] < 0 ? { color: '#52c41a', fontSize: 5 } : { color: '#DC143C', fontSize: 5 }} >{showIncr(overAllData['deadIncr'])}</label>} />
                     </Col>
                 </Row>
             </ProCard>

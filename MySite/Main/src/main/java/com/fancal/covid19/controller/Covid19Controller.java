@@ -13,6 +13,7 @@ import com.fancal.covid19.repository.OverallMapper;
 import com.fancal.covid19.repository.ProvinceMaper;
 import com.fancal.covid19.repository.UpdateTimeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.BufferedReader;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/covid19")
+@Transactional
 public class Covid19Controller {
     @Autowired
     private OverallMapper overallMapper;
@@ -84,7 +86,7 @@ public class Covid19Controller {
     @PostMapping("/activateCrawler")
     public void activateCrawler(){
         try {
-            Process pro = Runtime.getRuntime().exec("C:/Users/糙米小面包/AppData/Local/Programs/Python/Python39/python.exe d:/项目/Covid-19-Visualization/丁香园疫情数据.py");
+            Process pro = Runtime.getRuntime().exec("C:/Users/yyf25/AppData/Local/Programs/Python/Python310/python.exe c:/Drawer/Projects/Covid-19-Visualization/丁香园疫情数据.py");
             String line;
             BufferedReader buf = new BufferedReader(new InputStreamReader(pro.getInputStream()));
             while ((line = buf.readLine()) != null)

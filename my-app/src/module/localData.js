@@ -45,7 +45,7 @@ export default function LocalData() {
                                 // 保存定位城市名
                                 setcityName(addComp.city)
                                 // 查找定位城市名
-                                setcityData(findCityData(res.data.cities, addComp.city))
+                                setcityData(findCityData(res.data.cities, addComp.city))  
                                 // 查找定位城市境外输入数量
                                 setimportedCount(findImportedCount(res.data.cities))
                                 //保存风险区域名称
@@ -109,16 +109,18 @@ export default function LocalData() {
         }
     }
 
+
+    //风险区域气泡内容
+    const contentItem = dangerAreas.map((item) =>
+        <p key={item.areaName}>{item.areaName}</p>
+    );
     //风险区域气泡
     const content = (
         <div>
             {contentItem}
         </div>
     );
-    //风险区域气泡内容
-    const contentItem = dangerAreas.map((item) =>
-        <p key={item.areaName}>{item.areaName}</p>
-    );
+    
     //风险区域展开按钮
     const title = (
         <div>
