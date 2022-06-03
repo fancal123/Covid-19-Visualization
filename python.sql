@@ -13,6 +13,8 @@
 
  Date: 05/05/2022 20:24:27
 */
+-- 
+create database if not exists python default CHARSET utf8 COLLATE utf8_general_ci;;
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;

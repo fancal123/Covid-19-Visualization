@@ -1,6 +1,5 @@
 package com.fancal.covid19.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -10,7 +9,7 @@ import com.fancal.covid19.entity.Province;
 import com.fancal.covid19.entity.UpdateTime;
 import com.fancal.covid19.repository.NewsMapper;
 import com.fancal.covid19.repository.OverallMapper;
-import com.fancal.covid19.repository.ProvinceMaper;
+import com.fancal.covid19.repository.ProvinceMapper;
 import com.fancal.covid19.repository.UpdateTimeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +30,7 @@ public class Covid19Controller {
     private NewsMapper newsMapper;
 
     @Autowired
-    private ProvinceMaper provinceMaper;
+    private ProvinceMapper provinceMapper;
 
     @Autowired
     private UpdateTimeMapper updateTimeMapper;
@@ -52,7 +51,7 @@ public class Covid19Controller {
     //获取各省各市数据
     @GetMapping("/getProvinceData")
     public JSONArray getProvinceData(){
-        List<Province> provinceList = provinceMaper.selectList(null);
+        List<Province> provinceList = provinceMapper.selectList(null);
         JSONArray jsonArray = new JSONArray();
         for(Province province:provinceList){
             JSONObject jsonObject = JSONObject.parseObject(province.getContent());
@@ -67,7 +66,7 @@ public class Covid19Controller {
         String cityName = jsonObject.getString("cityName");
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq("provinceName",provinceName);
-        Province province = provinceMaper.selectOne(queryWrapper);
+        Province province = provinceMapper.selectOne(queryWrapper);
         //由于结构设定，不需要传递province对象中的provincename，content中就包含了所有所需数据
         JSONObject content = JSONObject.parseObject(province.getContent());
         // JSONArray  jsonArray= (JSONArray) JSONArray.toJSON(content.get("cities"));

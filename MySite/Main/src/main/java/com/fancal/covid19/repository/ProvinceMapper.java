@@ -5,5 +5,5 @@ import com.fancal.covid19.entity.Province;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProvinceMaper extends BaseMapper<Province> {
+public interface ProvinceMapper extends BaseMapper<Province> {
 }

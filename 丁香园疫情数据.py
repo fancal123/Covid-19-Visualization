@@ -80,7 +80,11 @@ def overall_paser(overall_information):
         .replace(" 死亡", "，死亡")
         .replace(" ", "")
     )
-
+    # if 'currentConfirmedIncr' in overall_information:
+    #     print(overall_information["currentConfirmedIncr"])
+    # else:
+    #     print("not exist")
+    # print(overall_information["quanguoTrendChart"])
     print(
         "现存确诊"
         + str(overall_information["currentConfirmedCount"])

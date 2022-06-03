@@ -67,6 +67,7 @@ export default function ProvinceDataWithMap() {
             description: provinceData_['cities'].length > 0 ? provinceData_['cities'].map(cities_paser) : 'NoCity'
         });
     }
+    // 解析城市数据，用于二级表格
     function cities_paser(cityData) {
         if (cityData.lengh == 0) {
             return ('Not Expandable');

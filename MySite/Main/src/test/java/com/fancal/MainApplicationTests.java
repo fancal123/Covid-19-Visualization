@@ -1,18 +1,13 @@
 package com.fancal;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.fancal.covid19.entity.Overall;
-import com.fancal.covid19.entity.Province;
 import com.fancal.covid19.repository.OverallMapper;
-import com.fancal.covid19.repository.ProvinceMaper;
+import com.fancal.covid19.repository.ProvinceMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.List;
 
 @SpringBootTest
 class MainApplicationTests {
@@ -20,7 +15,7 @@ class MainApplicationTests {
     private OverallMapper overallMapper;
 
     @Autowired
-    private ProvinceMaper provinceMaper;
+    private ProvinceMapper provinceMapper;
     @Test
     public void test(){
         try {
